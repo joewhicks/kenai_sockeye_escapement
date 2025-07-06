@@ -195,7 +195,7 @@ tidy(ets_model) |>
 
 | method     |     aic | sigma2 |  loglik |
 |:-----------|--------:|-------:|--------:|
-| ETS(M,N,N) | 1327.55 |   0.07 | -660.78 |
+| ETS(M,N,N) | 1331.39 |   0.07 | -662.69 |
 
 ETS Model Summary
 
@@ -210,7 +210,7 @@ checkresiduals(ets_model)
     ##  Ljung-Box test
     ## 
     ## data:  Residuals from ETS(M,N,N)
-    ## Q* = 7.1753, df = 10, p-value = 0.7088
+    ## Q* = 7.1243, df = 10, p-value = 0.7137
     ## 
     ## Model df: 0.   Total lags used: 10
 
@@ -316,8 +316,7 @@ checkresiduals(historical_ets)
 
 ## Adaptive Prediction System
 
-This is the core innovation: we create predictions that adapt based on
-2025 performance.
+Create predictions that adapt based on 2025 performance.
 
 ``` r
 # Enhanced predictions that incorporate 2025 data
@@ -406,11 +405,11 @@ predicted_peaks_updated |>
 
 | peak_rank | date_2025 | month_day | predicted_count | adjusted_prediction | data_status |
 |---:|:---|:---|---:|---:|:---|
-| 1 | 2025-07-27 | 07-27 | 91783 | 208626 | Future prediction |
-| 2 | 2025-07-21 | 07-21 | 82692 | 187962 | Future prediction |
-| 3 | 2025-07-28 | 07-28 | 81110 | 184367 | Future prediction |
-| 4 | 2025-07-22 | 07-22 | 72706 | 165263 | Future prediction |
-| 5 | 2025-07-29 | 07-29 | 72585 | 164989 | Future prediction |
+| 1 | 2025-07-27 | 07-27 | 91783 | 203807 | Future prediction |
+| 2 | 2025-07-21 | 07-21 | 82692 | 183620 | Future prediction |
+| 3 | 2025-07-28 | 07-28 | 81110 | 180108 | Future prediction |
+| 4 | 2025-07-22 | 07-22 | 72706 | 161445 | Future prediction |
+| 5 | 2025-07-29 | 07-29 | 72585 | 161177 | Future prediction |
 
 Top 5 Predicted Peak Days for 2025
 
@@ -420,8 +419,8 @@ Top 5 Predicted Peak Days for 2025
 
 ## Daily-Updated Forecast Plot
 
-This is the main result: a daily-updated forecast that shows historical
-patterns, actual 2025 data, and adjusted predictions.
+A daily-updated forecast that shows historical patterns, actual 2025
+data, and adjusted predictions.
 
 ``` r
 # Enhanced visualization
@@ -618,6 +617,6 @@ kable(true_accuracy_metrics)
 
 | n_observations | mean_abs_error | median_abs_error | mean_pct_error | rmse |
 |---------------:|---------------:|-----------------:|---------------:|-----:|
-|              4 |           7427 |             5596 |           50.7 | 9577 |
+|              5 |           7583 |             7734 |           51.9 | 9319 |
 
 ------------------------------------------------------------------------

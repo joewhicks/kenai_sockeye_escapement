@@ -243,7 +243,7 @@ checkresiduals(historical_ets)
 
 ## Adaptive Prediction System
 
-This is the core innovation: we create predictions that adapt based on 2025 performance.
+Create predictions that adapt based on 2025 performance.
 
 ```{r adaptive-predictions}
 # Enhanced predictions that incorporate 2025 data
@@ -338,7 +338,7 @@ predicted_peaks_updated |>
 
 ## Daily-Updated Forecast Plot
 
-This is the main result: a daily-updated forecast that shows historical patterns, actual 2025 data, and adjusted predictions.
+A daily-updated forecast that shows historical patterns, actual 2025 data, and adjusted predictions.
 
 ```{r forecast-visualization, fig.height=6}
 # Enhanced visualization
