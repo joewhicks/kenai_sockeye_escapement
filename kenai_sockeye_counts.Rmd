@@ -2,14 +2,11 @@
 title: "Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count Predictions"
 author: "Joe Hicks"
 date: "updated: `r Sys.Date()`"
-output:
-  html_document:
+github_document:
     toc: true
-    toc_float: true
     toc_depth: 3
-    code_folding: hide
-    theme: flatly
-    df_print: paged
+    fig_width: 10
+    fig_height: 8
 ---
 
 ```{r setup, include=FALSE}
@@ -439,6 +436,8 @@ summer_forecast_updated <- ggplot(summer_predictions, aes(x = julian_day)) +
 summer_forecast_updated
 ```
 
+Note (2025-07-06): model is wild because its early still.
+
 ## Historical Context Visualizations
 
 ### Annual Peak Analysis
@@ -528,54 +527,3 @@ datatable(true_accuracy_metrics)
 ```
 
 ---
-
-# Usage Instructions
-
-## How to Use This Daily Forecast
-
-1. **Run this report daily** - The analysis automatically pulls the latest data
-2. **Check 2025 performance** - See if the season is running high/low vs historical
-3. **Review peak predictions** - Top 5 predicted peak days with dates
-4. **Monitor adjustments** - Watch how predictions change as 2025 data comes in
-
-## Key Outputs
-
-- **Predicted peak dates** for 2025 fishing season
-- **Confidence intervals** around predictions
-- **Performance tracking** of 2025 vs historical patterns
-- **Daily updates** that improve accuracy over time
-
-## Interpretation Guide
-
-- **Green line**: Actual 2025 observations (real data)
-- **Blue line**: Historical average pattern
-- **Purple line**: Adjusted predictions based on 2025 performance
-- **Red dots**: Predicted peak days
-- **Shaded area**: 95% confidence interval
-
----
-
-# Technical Notes
-
-## Model Details
-
-- **ETS Model**: Exponential Smoothing State Space model for seasonal patterns
-- **Adaptive System**: Predictions adjust based on 2025 vs historical performance ratio
-- **Confidence Intervals**: Based on model residual standard deviation
-- **Update Frequency**: Daily, as new data becomes available
-
-## Data Sources
-
-- **Primary**: Alaska Department of Fish & Game live fish count API
-- **Location**: Kenai River counting station (ID: 40)
-- **Species**: Sockeye salmon (ID: 420)
-- **Years**: 2019-2025
-
-## Limitations
-
-- Predictions assume 2025 follows similar seasonal patterns to historical years
-- Weather, environmental conditions, and other factors may cause deviations
-- Model accuracy improves as more 2025 data becomes available
-
----
-
