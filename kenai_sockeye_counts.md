@@ -1,44 +1,56 @@
----
-title: "Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count Predictions"
-author: "Joe Hicks"
-date: "updated: `r Sys.Date()`"
-output: 
-  github_document:
-    toc: true
-    toc_depth: 3
-    fig_width: 10
-    fig_height: 8
----
+Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count
+Predictions
+================
+Joe Hicks
+updated: 2025-07-06
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  echo = TRUE,
-  warning = FALSE,
-  message = FALSE,
-  fig.height = 8,
-  fig.width = 10,
-  cache = FALSE
-)
-```
+- [Summary](#summary)
+- [Data Loading & Preparation](#data-loading--preparation)
+  - [Load Required Libraries](#load-required-libraries)
+  - [Fetch Real-Time Fish Count Data](#fetch-real-time-fish-count-data)
+- [Historical Pattern Analysis](#historical-pattern-analysis)
+  - [Seasonal Analysis by Julian Day](#seasonal-analysis-by-julian-day)
+  - [Peak Day Identification](#peak-day-identification)
+- [Time Series Forecasting Models](#time-series-forecasting-models)
+  - [ETS Model for Seasonal Pattern](#ets-model-for-seasonal-pattern)
+- [Daily-Updated Forecasting System](#daily-updated-forecasting-system)
+  - [The Challenge](#the-challenge)
+  - [Data Integration Strategy](#data-integration-strategy)
+  - [Historical ETS Model for Summer
+    Period](#historical-ets-model-for-summer-period)
+  - [Adaptive Prediction System](#adaptive-prediction-system)
+  - [Peak Predictions for 2025](#peak-predictions-for-2025)
+- [Visualization & Results](#visualization--results)
+  - [Daily-Updated Forecast Plot](#daily-updated-forecast-plot)
+  - [Historical Context
+    Visualizations](#historical-context-visualizations)
+    - [Annual Peak Analysis](#annual-peak-analysis)
+    - [Season Overview Heatmap](#season-overview-heatmap)
+- [Model Performance & Validation](#model-performance--validation)
+  - [Forecast Accuracy Metrics](#forecast-accuracy-metrics)
 
 # Summary
 
-This analysis provides daily-updated forecasts for Kenai River sockeye salmon counts, specifically targeting the July-August peak fishing period. The model incorporates:
+This analysis provides daily-updated forecasts for Kenai River sockeye
+salmon counts, specifically targeting the July-August peak fishing
+period. The model incorporates:
 
 - **Historical patterns** from 2019-2024
 - **Real-time 2025 data** for continuous model updates
 - **ETS time series modeling** for seasonal pattern recognition
-- **Adaptive predictions** that adjust based on 2025 performance vs historical
+- **Adaptive predictions** that adjust based on 2025 performance vs
+  historical
 
-**Key Goal**: Predict optimal fishing dates for 2025 summer peak period, with daily updates as new data becomes available.
+**Key Goal**: Predict optimal fishing dates for 2025 summer peak period,
+with daily updates as new data becomes available.
 
----
+------------------------------------------------------------------------
 
 # Data Loading & Preparation
 
 ## Load Required Libraries
 
-```{r libraries}
+``` r
 library(tidyverse)
 library(lubridate)
 library(jsonlite)
@@ -51,9 +63,11 @@ library(broom)
 
 ## Fetch Real-Time Fish Count Data
 
-The Alaska Department of Fish & Game provides live fish count data via API. We pull data from 2019-2025 for the Kenai River sockeye salmon counting station.
+The Alaska Department of Fish & Game provides live fish count data via
+API. We pull data from 2019-2025 for the Kenai River sockeye salmon
+counting station.
 
-```{r data-loading}
+``` r
 # Alaska Department of Fish & Game API endpoint
 url <- "https://www.adfg.alaska.gov/sf/FishCounts/index.cfm?ADFG=export.JSON&countLocationID=40&year=2025,2024,2023,2022,2021,2020,2019&speciesID=420"
 
@@ -73,18 +87,19 @@ fish_data <- raw_data$DATA |>
     year = year(date),
     julian_day = yday(date)  # Day of year (1-365) - key variable for seasonal analysis
   )
-
 ```
 
----
+------------------------------------------------------------------------
 
 # Historical Pattern Analysis
 
 ## Seasonal Analysis by Julian Day
 
-Understanding the seasonal pattern is crucial for predicting peaks. We analyze fish counts by Julian day (day of year) across all historical years.
+Understanding the seasonal pattern is crucial for predicting peaks. We
+analyze fish counts by Julian day (day of year) across all historical
+years.
 
-```{r seasonal-analysis}
+``` r
 # Aggregate fish counts by Julian day across all years
 julian_analysis <- fish_data |>
   group_by(julian_day) |>
@@ -103,15 +118,14 @@ julian_analysis <- fish_data |>
     date_2025 = as.Date(julian_day - 1, origin = "2025-01-01"),
     month_day = format(date_2025, "%m-%d")
   )
-
-
 ```
 
 ## Peak Day Identification
 
-Identify the top peak days based on historical averages to understand the fishing season structure.
+Identify the top peak days based on historical averages to understand
+the fishing season structure.
 
-```{r peak-identification}
+``` r
 # Find the top peak days based on average counts
 peak_days <- julian_analysis |>
   arrange(desc(avg_count)) |>
@@ -132,13 +146,34 @@ peak_days |>
   kable(caption = "Top 15 Historical Peak Days")
 ```
 
+| peak_rank | date_2025  | julian_day | avg_count | peak_category  |
+|----------:|:-----------|-----------:|----------:|:---------------|
+|         1 | 2025-07-26 |        207 |     91785 | Highest Peaks  |
+|         2 | 2025-07-20 |        201 |     82695 | Highest Peaks  |
+|         3 | 2025-07-27 |        208 |     81109 | Highest Peaks  |
+|         4 | 2025-07-21 |        202 |     72705 | Highest Peaks  |
+|         5 | 2025-07-28 |        209 |     72584 | Highest Peaks  |
+|         6 | 2025-07-29 |        210 |     71401 | High Peaks     |
+|         7 | 2025-07-25 |        206 |     71100 | High Peaks     |
+|         8 | 2025-07-18 |        199 |     62530 | High Peaks     |
+|         9 | 2025-08-02 |        214 |     57054 | High Peaks     |
+|        10 | 2025-07-19 |        200 |     55535 | High Peaks     |
+|        11 | 2025-08-03 |        215 |     55390 | Moderate Peaks |
+|        12 | 2025-08-04 |        216 |     54668 | Moderate Peaks |
+|        13 | 2025-08-18 |        230 |     53227 | Moderate Peaks |
+|        14 | 2025-07-30 |        211 |     50099 | Moderate Peaks |
+|        15 | 2025-08-17 |        229 |     49912 | Moderate Peaks |
+
+Top 15 Historical Peak Days
+
 # Time Series Forecasting Models
 
 ## ETS Model for Seasonal Pattern
 
-We use Exponential Smoothing State Space (ETS) models to capture the seasonal pattern and create baseline predictions.
+We use Exponential Smoothing State Space (ETS) models to capture the
+seasonal pattern and create baseline predictions.
 
-```{r ets-modeling, fig.height=6}
+``` r
 # Create a time series from the historical Julian day averages
 julian_ts <- ts(julian_analysis$avg_count, frequency = 1)
 ets_model <- ets(julian_ts)
@@ -156,31 +191,52 @@ tidy.ets <- function(x, ...) {
 # Display model summary using tidy()
 tidy(ets_model) |>
   kable(caption = "ETS Model Summary")
+```
 
+| method     |     aic | sigma2 |  loglik |
+|:-----------|--------:|-------:|--------:|
+| ETS(M,N,N) | 1327.55 |   0.07 | -660.78 |
+
+ETS Model Summary
+
+``` r
 # Model diagnostics
 checkresiduals(ets_model)
 ```
 
-* ✅ No significant autocorrelation in residuals
-* ✅ Model captured the main patterns in the data
-* ✅ Residuals look like white noise (random)
-* ✅ Good model fit from a statistical perspective
+![](kenai_sockeye_counts_files/figure-gfm/ets-modeling-1.png)<!-- -->
 
----
+    ## 
+    ##  Ljung-Box test
+    ## 
+    ## data:  Residuals from ETS(M,N,N)
+    ## Q* = 7.1753, df = 10, p-value = 0.7088
+    ## 
+    ## Model df: 0.   Total lags used: 10
+
+- ✅ No significant autocorrelation in residuals
+- ✅ Model captured the main patterns in the data
+- ✅ Residuals look like white noise (random)
+- ✅ Good model fit from a statistical perspective
+
+------------------------------------------------------------------------
 
 # Daily-Updated Forecasting System
 
 ## The Challenge
 
-Traditional forecasting uses only historical data. However, we want to **update predictions daily** as new 2025 data becomes available. This allows us to:
+Traditional forecasting uses only historical data. However, we want to
+**update predictions daily** as new 2025 data becomes available. This
+allows us to:
 
-1. **Incorporate real observations** from 2025
-2. **Adjust predictions** based on whether 2025 is running high/low vs historical
-3. **Improve accuracy** as the season progresses
+1.  **Incorporate real observations** from 2025
+2.  **Adjust predictions** based on whether 2025 is running high/low vs
+    historical
+3.  **Improve accuracy** as the season progresses
 
 ## Data Integration Strategy
 
-```{r data-integration}
+``` r
 # Get actual 2025 data observed so far (July-August focus)
 actual_2025_summer <- fish_data |>
   filter(year == 2025, julian_day >= 182, julian_day <= 243) |>
@@ -218,12 +274,11 @@ summer_combined <- tibble(julian_day = 182:243) |>
       TRUE ~ "Future prediction"
     )
   )
-
 ```
 
 ## Historical ETS Model for Summer Period
 
-```{r summer-ets}
+``` r
 # Create ETS model on historical data only
 historical_ts <- ts(summer_combined$historical_avg, frequency = 1)
 historical_ets <- ets(historical_ts)
@@ -231,21 +286,40 @@ historical_ets <- ets(historical_ts)
 # Display model summary using tidy()
 tidy.ets(historical_ets) |>
   kable(caption = "ETS Model Summary")
+```
 
+| method     |     aic |    sigma2 |  loglik |
+|:-----------|--------:|----------:|--------:|
+| ETS(A,N,N) | 1406.47 | 107601717 | -700.24 |
+
+ETS Model Summary
+
+``` r
 # Model diagnostics
 checkresiduals(historical_ets)
 ```
 
-* ✅ No significant autocorrelation in residuals
-* ✅ Model captured the main patterns in the data
-* ✅ Residuals look like white noise (random)
-* ✅ Good model fit from a statistical perspective
+![](kenai_sockeye_counts_files/figure-gfm/summer-ets-1.png)<!-- -->
+
+    ## 
+    ##  Ljung-Box test
+    ## 
+    ## data:  Residuals from ETS(A,N,N)
+    ## Q* = 12.19, df = 10, p-value = 0.2725
+    ## 
+    ## Model df: 0.   Total lags used: 10
+
+- ✅ No significant autocorrelation in residuals
+- ✅ Model captured the main patterns in the data
+- ✅ Residuals look like white noise (random)
+- ✅ Good model fit from a statistical perspective
 
 ## Adaptive Prediction System
 
-This is the core innovation: we create predictions that adapt based on 2025 performance.
+This is the core innovation: we create predictions that adapt based on
+2025 performance.
 
-```{r adaptive-predictions}
+``` r
 # Enhanced predictions that incorporate 2025 data
 summer_predictions <- summer_combined |>
   mutate(
@@ -306,13 +380,11 @@ summer_predictions <- summer_predictions |>
       TRUE ~ adjusted_prediction + 1.96 * residual_sd
     )
   )
-
-
 ```
 
 ## Peak Predictions for 2025
 
-```{r peak-predictions}
+``` r
 # Find predicted peaks (using adjusted predictions if available)
 predicted_peaks_updated <- summer_predictions |>
   mutate(
@@ -332,15 +404,26 @@ predicted_peaks_updated |>
   kable(caption = "Top 5 Predicted Peak Days for 2025")
 ```
 
----
+| peak_rank | date_2025 | month_day | predicted_count | adjusted_prediction | data_status |
+|---:|:---|:---|---:|---:|:---|
+| 1 | 2025-07-27 | 07-27 | 91783 | 208626 | Future prediction |
+| 2 | 2025-07-21 | 07-21 | 82692 | 187962 | Future prediction |
+| 3 | 2025-07-28 | 07-28 | 81110 | 184367 | Future prediction |
+| 4 | 2025-07-22 | 07-22 | 72706 | 165263 | Future prediction |
+| 5 | 2025-07-29 | 07-29 | 72585 | 164989 | Future prediction |
+
+Top 5 Predicted Peak Days for 2025
+
+------------------------------------------------------------------------
 
 # Visualization & Results
 
 ## Daily-Updated Forecast Plot
 
-This is the main result: a daily-updated forecast that shows historical patterns, actual 2025 data, and adjusted predictions.
+This is the main result: a daily-updated forecast that shows historical
+patterns, actual 2025 data, and adjusted predictions.
 
-```{r forecast-visualization, fig.height=6}
+``` r
 # Enhanced visualization
 summer_forecast_updated <- ggplot(summer_predictions, aes(x = julian_day)) +
   # Historical average
@@ -437,13 +520,15 @@ summer_forecast_updated <- ggplot(summer_predictions, aes(x = julian_day)) +
 summer_forecast_updated
 ```
 
+![](kenai_sockeye_counts_files/figure-gfm/forecast-visualization-1.png)<!-- -->
+
 Note (2025-07-06): model is wild because its early still.
 
 ## Historical Context Visualizations
 
 ### Annual Peak Analysis
 
-```{r annual-peaks, fig.height=6}
+``` r
 # Historical peaks by year
 yearly_peaks <- fish_data |>
   group_by(year) |>
@@ -475,9 +560,11 @@ historical_peaks <- yearly_peaks |>
 historical_peaks
 ```
 
+![](kenai_sockeye_counts_files/figure-gfm/annual-peaks-1.png)<!-- -->
+
 ### Season Overview Heatmap
 
-```{r heatmap, fig.height=6}
+``` r
 # Heatmap of fish counts by Julian day and year
 heat_map <- fish_data |>
   ggplot(aes(x = julian_day, y = factor(year), fill = fish_count)) +
@@ -499,13 +586,15 @@ heat_map <- fish_data |>
 heat_map
 ```
 
----
+![](kenai_sockeye_counts_files/figure-gfm/heatmap-1.png)<!-- -->
+
+------------------------------------------------------------------------
 
 # Model Performance & Validation
 
 ## Forecast Accuracy Metrics
 
-```{r validation}
+``` r
 # TRUE model validation
 true_accuracy_metrics <- summer_predictions |>
   filter(!is.na(actual_2025_count)) |>
@@ -527,4 +616,8 @@ true_accuracy_metrics <- summer_predictions |>
 kable(true_accuracy_metrics)
 ```
 
----
+| n_observations | mean_abs_error | median_abs_error | mean_pct_error | rmse |
+|---------------:|---------------:|-----------------:|---------------:|-----:|
+|              4 |           7427 |             5596 |           50.7 | 9577 |
+
+------------------------------------------------------------------------
