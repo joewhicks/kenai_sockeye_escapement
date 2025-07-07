@@ -2,7 +2,7 @@ Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count
 Predictions
 ================
 Joe Hicks
-updated: 2025-07-06
+updated: 2025-07-07
 
 - [Summary](#summary)
 - [Data Loading & Preparation](#data-loading--preparation)
