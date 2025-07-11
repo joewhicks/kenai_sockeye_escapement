@@ -2,7 +2,7 @@ Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count
 Predictions
 ================
 Joe Hicks
-updated: 2025-07-10
+updated: 2025-07-11
 
 - [Summary](#summary)
 - [Data Loading & Preparation](#data-loading--preparation)
@@ -193,9 +193,9 @@ tidy(ets_model) |>
   kable(caption = "ETS Model Summary")
 ```
 
-| method     |     aic | sigma2 |  loglik |
-|:-----------|--------:|-------:|--------:|
-| ETS(M,N,N) | 1332.46 |   0.08 | -663.23 |
+| method     |     aic | sigma2 | loglik |
+|:-----------|--------:|-------:|-------:|
+| ETS(M,N,N) | 1333.99 |   0.08 |   -664 |
 
 ETS Model Summary
 
@@ -210,7 +210,7 @@ checkresiduals(ets_model)
     ##  Ljung-Box test
     ## 
     ## data:  Residuals from ETS(M,N,N)
-    ## Q* = 8.1686, df = 10, p-value = 0.6124
+    ## Q* = 8.6695, df = 10, p-value = 0.5637
     ## 
     ## Model df: 0.   Total lags used: 10
 
@@ -405,11 +405,11 @@ predicted_peaks_updated |>
 
 | peak_rank | date_2025 | month_day | predicted_count | adjusted_prediction | data_status |
 |---:|:---|:---|---:|---:|:---|
-| 1 | 2025-07-27 | 07-27 | 91783 | 168625 | Future prediction |
-| 2 | 2025-07-21 | 07-21 | 82692 | 151923 | Future prediction |
-| 3 | 2025-07-28 | 07-28 | 81110 | 149017 | Future prediction |
-| 4 | 2025-07-22 | 07-22 | 72706 | 133576 | Future prediction |
-| 5 | 2025-07-29 | 07-29 | 72585 | 133354 | Future prediction |
+| 1 | 2025-07-27 | 07-27 | 91783 | 173845 | Future prediction |
+| 2 | 2025-07-21 | 07-21 | 82692 | 156626 | Future prediction |
+| 3 | 2025-07-28 | 07-28 | 81110 | 153629 | Future prediction |
+| 4 | 2025-07-22 | 07-22 | 72706 | 137711 | Future prediction |
+| 5 | 2025-07-29 | 07-29 | 72585 | 137482 | Future prediction |
 
 Top 5 Predicted Peak Days for 2025
 
@@ -615,8 +615,8 @@ true_accuracy_metrics <- summer_predictions |>
 kable(true_accuracy_metrics)
 ```
 
-| n_observations | mean_abs_error | median_abs_error | mean_pct_error | rmse |
-|---------------:|---------------:|-----------------:|---------------:|-----:|
-|              8 |           7928 |             7969 |           48.3 | 9509 |
+| n_observations | mean_abs_error | median_abs_error | mean_pct_error |  rmse |
+|---------------:|---------------:|-----------------:|---------------:|------:|
+|              9 |           9991 |             8204 |           49.6 | 12584 |
 
 ------------------------------------------------------------------------
