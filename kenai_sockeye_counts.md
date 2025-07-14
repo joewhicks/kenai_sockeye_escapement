@@ -2,7 +2,7 @@ Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count
 Predictions
 ================
 Joe Hicks
-updated: 2025-07-11
+updated: 2025-07-14
 
 - [Summary](#summary)
 - [Data Loading & Preparation](#data-loading--preparation)
@@ -193,9 +193,9 @@ tidy(ets_model) |>
   kable(caption = "ETS Model Summary")
 ```
 
-| method     |     aic | sigma2 | loglik |
-|:-----------|--------:|-------:|-------:|
-| ETS(M,N,N) | 1333.99 |   0.08 |   -664 |
+| method     |     aic | sigma2 |  loglik |
+|:-----------|--------:|-------:|--------:|
+| ETS(M,N,N) | 1330.29 |   0.07 | -662.15 |
 
 ETS Model Summary
 
@@ -210,7 +210,7 @@ checkresiduals(ets_model)
     ##  Ljung-Box test
     ## 
     ## data:  Residuals from ETS(M,N,N)
-    ## Q* = 8.6695, df = 10, p-value = 0.5637
+    ## Q* = 8.3203, df = 10, p-value = 0.5976
     ## 
     ## Model df: 0.   Total lags used: 10
 
@@ -405,11 +405,11 @@ predicted_peaks_updated |>
 
 | peak_rank | date_2025 | month_day | predicted_count | adjusted_prediction | data_status |
 |---:|:---|:---|---:|---:|:---|
-| 1 | 2025-07-27 | 07-27 | 91783 | 173845 | Future prediction |
-| 2 | 2025-07-21 | 07-21 | 82692 | 156626 | Future prediction |
-| 3 | 2025-07-28 | 07-28 | 81110 | 153629 | Future prediction |
-| 4 | 2025-07-22 | 07-22 | 72706 | 137711 | Future prediction |
-| 5 | 2025-07-29 | 07-29 | 72585 | 137482 | Future prediction |
+| 1 | 2025-07-27 | 07-27 | 91783 | 188056 | Future prediction |
+| 2 | 2025-07-21 | 07-21 | 82692 | 169430 | Future prediction |
+| 3 | 2025-07-28 | 07-28 | 81110 | 166189 | Future prediction |
+| 4 | 2025-07-22 | 07-22 | 72706 | 148968 | Future prediction |
+| 5 | 2025-07-29 | 07-29 | 72585 | 148721 | Future prediction |
 
 Top 5 Predicted Peak Days for 2025
 
@@ -617,6 +617,6 @@ kable(true_accuracy_metrics)
 
 | n_observations | mean_abs_error | median_abs_error | mean_pct_error |  rmse |
 |---------------:|---------------:|-----------------:|---------------:|------:|
-|              9 |           9991 |             8204 |           49.6 | 12584 |
+|             12 |          11447 |             8391 |           48.2 | 14066 |
 
 ------------------------------------------------------------------------
