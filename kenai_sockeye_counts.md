@@ -2,7 +2,7 @@ Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count
 Predictions
 ================
 Joe Hicks
-updated: 2025-07-16
+updated: 2025-07-17
 
 - [Summary](#summary)
 - [Data Loading & Preparation](#data-loading--preparation)
@@ -195,7 +195,7 @@ tidy(ets_model) |>
 
 | method     |     aic | sigma2 |  loglik |
 |:-----------|--------:|-------:|--------:|
-| ETS(M,N,N) | 1334.05 |   0.07 | -664.03 |
+| ETS(M,N,N) | 1337.85 |   0.08 | -665.92 |
 
 ETS Model Summary
 
@@ -210,7 +210,7 @@ checkresiduals(ets_model)
     ##  Ljung-Box test
     ## 
     ## data:  Residuals from ETS(M,N,N)
-    ## Q* = 7.6159, df = 10, p-value = 0.6663
+    ## Q* = 8.2899, df = 10, p-value = 0.6005
     ## 
     ## Model df: 0.   Total lags used: 10
 
@@ -405,11 +405,11 @@ predicted_peaks_updated |>
 
 | peak_rank | date_2025 | month_day | predicted_count | adjusted_prediction | data_status |
 |---:|:---|:---|---:|---:|:---|
-| 1 | 2025-07-27 | 07-27 | 91783 | 165369 | Future prediction |
-| 2 | 2025-07-21 | 07-21 | 82692 | 148989 | Future prediction |
-| 3 | 2025-07-28 | 07-28 | 81110 | 146139 | Future prediction |
-| 4 | 2025-07-22 | 07-22 | 72706 | 130996 | Future prediction |
-| 5 | 2025-07-29 | 07-29 | 72585 | 130779 | Future prediction |
+| 1 | 2025-07-27 | 07-27 | 91783 | 210659 | Future prediction |
+| 2 | 2025-07-21 | 07-21 | 82692 | 189793 | Future prediction |
+| 3 | 2025-07-28 | 07-28 | 81110 | 186163 | Future prediction |
+| 4 | 2025-07-22 | 07-22 | 72706 | 166873 | Future prediction |
+| 5 | 2025-07-29 | 07-29 | 72585 | 166596 | Future prediction |
 
 Top 5 Predicted Peak Days for 2025
 
@@ -617,6 +617,6 @@ kable(true_accuracy_metrics)
 
 | n_observations | mean_abs_error | median_abs_error | mean_pct_error |  rmse |
 |---------------:|---------------:|-----------------:|---------------:|------:|
-|             15 |          12502 |             9060 |           48.1 | 15255 |
+|             16 |          17152 |             9958 |           50.1 | 26271 |
 
 ------------------------------------------------------------------------
