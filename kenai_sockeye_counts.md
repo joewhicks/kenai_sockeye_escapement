@@ -539,7 +539,7 @@ historical_peaks <- yearly_peaks |>
   mutate(d = format(date, "%m-%d")) |>
   ggplot(aes(x = julian_day, y = fish_count, color = factor(year))) +
   geom_point(size = 3, alpha = 0.8) +
-  geom_vline(xintercept = 199, linetype = "dashed") +
+  geom_vline(xintercept = yday(Sys.Date()), linetype = "dashed") +
   geom_text(
     aes(x = julian_day, y = fish_count, label = d, color = factor(year)),
     nudge_y = 7000
@@ -548,7 +548,6 @@ historical_peaks <- yearly_peaks |>
   labs(
     title = "Historical Peak Timing by Year",
     subtitle = "Shows when peaks occurred in each year, including 2025 (if available)",
-    caption = "Dashed line: Jul 18th reference",
     y = "Fish Counts",
     color = "Year"
   ) +
@@ -568,7 +567,7 @@ historical_peaks
 heat_map <- fish_data |>
   ggplot(aes(x = julian_day, y = factor(year), fill = fish_count)) +
   geom_tile() +
-  geom_vline(xintercept = 199, linetype = "dashed") +
+  geom_vline(xintercept = yday(Sys.Date()), linetype = "dashed") +
   scale_fill_viridis_c(name = "Fish Count", trans = "sqrt") +
   labs(
     title = "Fish Count Heatmap: Julian Day vs Year",
