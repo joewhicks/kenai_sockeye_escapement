@@ -405,7 +405,7 @@ summer_forecast_updated <- ggplot(summer_predictions, aes(x = julian_day)) +
     breaks = seq(180, 250, by = 10),
     labels = function(x) format(as.Date(x - 1, origin = "2025-01-01"), "%b %d")
   ) +
-  scale_y_continuous(labels = scales::label_comma(), limits = c(0, 225000)) +
+  scale_y_continuous(labels = scales::label_comma(), limits = c(0, 300000)) +
   # Color and fill scales
   scale_color_manual(
     name = "Legend",
