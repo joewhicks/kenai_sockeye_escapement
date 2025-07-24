@@ -2,7 +2,7 @@ Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count
 Predictions
 ================
 Joe Hicks
-updated: 2025-07-23
+updated: 2025-07-24
 
 - [Summary](#summary)
 - [Data Loading & Preparation](#data-loading--preparation)
@@ -158,11 +158,11 @@ peak_days |>
 |         8 | 2025-07-18 |        199 |     70256 | High Peaks     |
 |         9 | 2025-07-19 |        200 |     69080 | High Peaks     |
 |        10 | 2025-07-22 |        203 |     65574 | High Peaks     |
-|        11 | 2025-08-02 |        214 |     57054 | Moderate Peaks |
-|        12 | 2025-08-03 |        215 |     55390 | Moderate Peaks |
-|        13 | 2025-08-04 |        216 |     54668 | Moderate Peaks |
-|        14 | 2025-08-18 |        230 |     53227 | Moderate Peaks |
-|        15 | 2025-07-30 |        211 |     50099 | Moderate Peaks |
+|        11 | 2025-07-23 |        204 |     60709 | Moderate Peaks |
+|        12 | 2025-08-02 |        214 |     57054 | Moderate Peaks |
+|        13 | 2025-08-03 |        215 |     55390 | Moderate Peaks |
+|        14 | 2025-08-04 |        216 |     54668 | Moderate Peaks |
+|        15 | 2025-08-18 |        230 |     53227 | Moderate Peaks |
 
 Top 15 Historical Peak Days
 
@@ -195,7 +195,7 @@ tidy(ets_model) |>
 
 | method     |     aic | sigma2 |  loglik |
 |:-----------|--------:|-------:|--------:|
-| ETS(M,N,N) | 1335.15 |   0.07 | -664.58 |
+| ETS(M,N,N) | 1333.14 |   0.07 | -663.57 |
 
 ETS Model Summary
 
@@ -210,7 +210,7 @@ checkresiduals(ets_model)
     ##  Ljung-Box test
     ## 
     ## data:  Residuals from ETS(M,N,N)
-    ## Q* = 14.348, df = 10, p-value = 0.1577
+    ## Q* = 10.014, df = 10, p-value = 0.4393
     ## 
     ## Model df: 0.   Total lags used: 10
 
@@ -405,11 +405,11 @@ predicted_peaks_updated |>
 
 | peak_rank | date_2025 | month_day | predicted_count | adjusted_prediction | data_status |
 |---:|:---|:---|---:|---:|:---|
-| 1 | 2025-07-27 | 07-27 | 91783 | 259861 | Future prediction |
-| 2 | 2025-07-21 | 07-21 | 247093 | 247093 | Observed 2025 |
-| 3 | 2025-07-28 | 07-28 | 81110 | 229644 | Future prediction |
-| 4 | 2025-07-29 | 07-29 | 72585 | 205507 | Future prediction |
-| 5 | 2025-07-30 | 07-30 | 71401 | 202155 | Future prediction |
+| 1 | 2025-07-27 | 07-27 | 91783 | 317769 | Future prediction |
+| 2 | 2025-07-28 | 07-28 | 81110 | 280818 | Future prediction |
+| 3 | 2025-07-29 | 07-29 | 72585 | 251302 | Future prediction |
+| 4 | 2025-07-30 | 07-30 | 71401 | 247203 | Future prediction |
+| 5 | 2025-07-21 | 07-21 | 247093 | 247093 | Observed 2025 |
 
 Top 5 Predicted Peak Days for 2025
 
@@ -616,6 +616,6 @@ kable(true_accuracy_metrics)
 
 | n_observations | mean_abs_error | median_abs_error | mean_pct_error |  rmse |
 |---------------:|---------------:|-----------------:|---------------:|------:|
-|             22 |          42742 |            15999 |           54.8 | 63821 |
+|             23 |          47303 |            17823 |           55.7 | 69599 |
 
 ------------------------------------------------------------------------
