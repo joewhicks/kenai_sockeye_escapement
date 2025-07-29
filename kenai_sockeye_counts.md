@@ -2,7 +2,7 @@ Kenai River Sockeye Salmon Count Forecasting: Daily Fish Count
 Predictions
 ================
 Joe Hicks
-updated: 2025-07-25
+updated: 2025-07-29
 
 - [Summary](#summary)
 - [Data Loading & Preparation](#data-loading--preparation)
@@ -148,13 +148,13 @@ peak_days |>
 
 | peak_rank | date_2025  | julian_day | avg_count | peak_category  |
 |----------:|:-----------|-----------:|----------:|:---------------|
-|         1 | 2025-07-21 |        202 |     97617 | Highest Peaks  |
-|         2 | 2025-07-20 |        201 |     96731 | Highest Peaks  |
-|         3 | 2025-07-26 |        207 |     91785 | Highest Peaks  |
-|         4 | 2025-07-27 |        208 |     81109 | Highest Peaks  |
-|         5 | 2025-07-28 |        209 |     72584 | Highest Peaks  |
-|         6 | 2025-07-29 |        210 |     71401 | High Peaks     |
-|         7 | 2025-07-25 |        206 |     71100 | High Peaks     |
+|         1 | 2025-07-27 |        208 |    104844 | Highest Peaks  |
+|         2 | 2025-07-26 |        207 |    103516 | Highest Peaks  |
+|         3 | 2025-07-21 |        202 |     97617 | Highest Peaks  |
+|         4 | 2025-07-20 |        201 |     96731 | Highest Peaks  |
+|         5 | 2025-07-25 |        206 |     78935 | Highest Peaks  |
+|         6 | 2025-07-28 |        209 |     72584 | High Peaks     |
+|         7 | 2025-07-29 |        210 |     71401 | High Peaks     |
 |         8 | 2025-07-18 |        199 |     70256 | High Peaks     |
 |         9 | 2025-07-19 |        200 |     69080 | High Peaks     |
 |        10 | 2025-07-22 |        203 |     65574 | High Peaks     |
@@ -195,7 +195,7 @@ tidy(ets_model) |>
 
 | method     |     aic | sigma2 |  loglik |
 |:-----------|--------:|-------:|--------:|
-| ETS(M,N,N) | 1330.08 |   0.06 | -662.04 |
+| ETS(M,N,N) | 1332.98 |   0.07 | -663.49 |
 
 ETS Model Summary
 
@@ -210,7 +210,7 @@ checkresiduals(ets_model)
     ##  Ljung-Box test
     ## 
     ## data:  Residuals from ETS(M,N,N)
-    ## Q* = 10.517, df = 10, p-value = 0.3964
+    ## Q* = 10.86, df = 10, p-value = 0.3685
     ## 
     ## Model df: 0.   Total lags used: 10
 
@@ -405,11 +405,11 @@ predicted_peaks_updated |>
 
 | peak_rank | date_2025 | month_day | predicted_count | adjusted_prediction | data_status |
 |---:|:---|:---|---:|---:|:---|
-| 1 | 2025-07-27 | 07-27 | 91783 | 327475 | Future prediction |
-| 2 | 2025-07-28 | 07-28 | 81110 | 289395 | Future prediction |
-| 3 | 2025-07-29 | 07-29 | 72585 | 258977 | Future prediction |
-| 4 | 2025-07-30 | 07-30 | 71401 | 254753 | Future prediction |
-| 5 | 2025-07-26 | 07-26 | 71098 | 253672 | Future prediction |
+| 1 | 2025-07-27 | 07-27 | 247250 | 247250 | Observed 2025 |
+| 2 | 2025-07-21 | 07-21 | 247093 | 247093 | Observed 2025 |
+| 3 | 2025-07-28 | 07-28 | 81110 | 242842 | Available (not yet observed) |
+| 4 | 2025-07-29 | 07-29 | 72585 | 217318 | Available (not yet observed) |
+| 5 | 2025-07-30 | 07-30 | 71401 | 213774 | Future prediction |
 
 Top 5 Predicted Peak Days for 2025
 
@@ -616,6 +616,6 @@ kable(true_accuracy_metrics)
 
 | n_observations | mean_abs_error | median_abs_error | mean_pct_error |  rmse |
 |---------------:|---------------:|-----------------:|---------------:|------:|
-|             24 |          50313 |            22035 |           56.5 | 72370 |
+|             27 |          57143 |            26493 |             57 | 78500 |
 
 ------------------------------------------------------------------------
